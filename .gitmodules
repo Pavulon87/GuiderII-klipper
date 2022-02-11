@@ -1,0 +1,6 @@
+[submodule "qjson4"]
+	path = qjson4
+	url = https://github.com/eteran/qjson4.git
+[submodule "QProgressIndicator"]
+	path = QProgressIndicator
+	url = https://github.com/mojocorp/QProgressIndicator.git
