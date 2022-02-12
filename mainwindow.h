@@ -37,6 +37,7 @@ public:
 public slots:
     void onPrompShow(QString title, QStringList choices);
     void onErrorMessage(QString msg);
+    void setZoffset(double offset);
     //void pushButtonClicked();
 
 signals:
@@ -52,6 +53,7 @@ private slots:
     void clearCache();
     void restartProcess();
     void slotReboot();
+    void getHomePosition();
 
 
     void showTime();
@@ -120,6 +122,7 @@ private:
 
     bool filamentLoaded = true;
     bool filamentInited = false;
+    double zoffset = 0.0;
 
     QUrl url;
     QNetworkAccessManager qnam;

@@ -18,6 +18,7 @@ signals:
     void signalErrorMsg(QString msg);
     void signalStatusLcd(QString text);
     void signalPromptShow(QString title, QStringList choices);
+    void signalZoffset(double offset);
 
 
 public slots:
@@ -28,6 +29,7 @@ public slots:
     void buzzer(QString seq);
     void displayLcd(QString text);
     void setupPrompt(QString text);
+    void gcodePosition(QString text);
 
 private:
     QTcpServer _server;

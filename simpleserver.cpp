@@ -95,8 +95,27 @@ void SimpleServer::onReadyRead()
         } else if ( seq.startsWith("prompt", Qt::CaseInsensitive) )
         {
             setupPrompt(seq);
+        } else if ( seq.startsWith("gcode", Qt::CaseInsensitive) )
+        {
+            gcodePosition(seq);
         }
     }
+}
+
+void SimpleServer::gcodePosition(QString text)
+{
+    if ( text.indexOf("base") == -1 )
+    {
+        return;
+    }
+
+    text.remove(0, text.indexOf(QString::fromUtf8(" "))+1);
+    text.remove(0, text.indexOf(QString::fromUtf8("Z:"))+2);
+    text = text.left(text.indexOf(QString::fromUtf8(" ")));
+    //int tmp = text.indexOf(QString::fromUtf8(" "));
+    //text.remove(tmp, text.length()-tmp);
+
+    emit signalZoffset(text.toDouble());
 }
 
 void SimpleServer::buzzer(QString seq)

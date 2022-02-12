@@ -143,7 +143,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     workerThread.start();
 
-
     //butt = new ButtonThread();
     //butt->exec();
     //butt->run();
@@ -162,6 +161,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(server, SIGNAL(signalErrorMsg(QString)), this, SLOT(onErrorMessage(QString)));
     connect(server, SIGNAL(signalStatusLcd(QString)), this, SLOT(onStatusLcd(QString)));
     connect(server, SIGNAL(signalPromptShow(QString,QStringList)), this, SLOT(onPrompShow(QString,QStringList)));
+    connect(server, SIGNAL(signalZoffset(double)), this, SLOT(setZoffset(double)));
+
+    QTimer::singleShot(5000, this, SLOT(getHomePosition()));
 
     /*QTimer *timerX = new QTimer(this);
     connect(timerX, SIGNAL(timeout()), this, SLOT(displaySystemCommandsDialog()));
@@ -249,6 +251,12 @@ void MainWindow::restartProcess()
 
     file.close();
 }*/
+
+void MainWindow::setZoffset(double offset)
+{
+    zoffset = offset;
+    ui->label_20->setText(QString::number(zoffset, 'f', 2));
+}
 
 void MainWindow::checkFilamentSensor()
 {
@@ -485,12 +493,24 @@ void MainWindow::actionZoffsetM()
     command = "{ \"command\": \"SET_GCODE_OFFSET Z_ADJUST=-0.01 MOVE=1\" }";
 
     startRequest(url, command);
+
+    QTimer::singleShot(500, this, SLOT(getHomePosition()));
 }
 
 void MainWindow::actionZoffsetP()
 {
     url = baseUrl + "/api/printer/command";
     command = "{ \"command\": \"SET_GCODE_OFFSET Z_ADJUST=0.01 MOVE=1\" }";
+
+    startRequest(url, command);
+
+    QTimer::singleShot(5000, this, SLOT(getHomePosition()));
+}
+
+void MainWindow::getHomePosition()
+{
+    url = baseUrl + "/api/printer/command";
+    command = "{ \"command\": \"GET_POSITION\" }";
 
     startRequest(url, command);
 }
