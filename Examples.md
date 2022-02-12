@@ -1,0 +1,8 @@
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_093749.jpg)
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_093758.jpg)
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_093824.jpg)
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_093905.jpg)
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_093949.jpg)
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_094133.jpg)
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_094218.jpg)
+![example](https://github.com/Pavulon87/GuiderII-klipper/raw/master/Images/IMG_20220212_121737.jpg)
