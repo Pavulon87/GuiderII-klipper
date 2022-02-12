@@ -764,6 +764,8 @@ void MainWindow::actionConnect()
     command = "{ \"command\": \"connect\" }";
 
     startRequest(url, command);
+
+    QTimer::singleShot(500, this, SLOT(getHomePosition()));
 }
 
 void MainWindow::actionRestart()
@@ -774,6 +776,8 @@ void MainWindow::actionRestart()
         command = "{ \"command\": \"RESTART\" }";
         startRequest(url, command);
     }
+
+    QTimer::singleShot(500, this, SLOT(getHomePosition()));
 }
 
 void MainWindow::actionFirmwareRestart()
