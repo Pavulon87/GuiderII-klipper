@@ -438,6 +438,7 @@ void MainWindow::onPromptClicked(int i)
     command = "{ \"command\": \"M876 S" + QString::number(i) + "\" }";
 
     startRequest(url, command);
+    onClosePrompt();
 }
 
 void MainWindow::getOctoprintSettings()
@@ -758,34 +759,58 @@ void MainWindow::actionStop()
     }
 }
 
-void MainWindow::actionConnect()
+void MainWindow::actionConnect(bool home)
 {
+    connectingNumber += 1;
     url = baseUrl + "/api/connection";
     command = "{ \"command\": \"connect\" }";
 
-    startRequest(url, command);
+    if ( connectingNumber < 3 )
+    {
+        startRequest(url, command);
 
-    QTimer::singleShot(500, this, SLOT(getHomePosition()));
+        if ( home )
+        {
+            QTimer::singleShot(2500, this, SLOT(getHomePosition()));
+        }
+    } else {
+        actionRestart(true);
+        connectingNumber = 0;
+    }
 }
 
-void MainWindow::actionRestart()
+void MainWindow::actionRestart(bool force)
 {
+    if ( force )
+    {
+        url = baseUrl + "/api/system/commands/custom/klippercmdrestart";
+        startRequest2(url);
+        return;
+    }
+
     if ( QMessageBox::question(this, "Confirm", "Are you sure you want to Restart?", QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes )
     {
         url = baseUrl + "/api/printer/command";
         command = "{ \"command\": \"RESTART\" }";
+
         startRequest(url, command);
     }
-
-    QTimer::singleShot(500, this, SLOT(getHomePosition()));
 }
 
-void MainWindow::actionFirmwareRestart()
+void MainWindow::actionFirmwareRestart(bool force)
 {
+    if ( force )
+    {
+        url = baseUrl + "/api/system/commands/custom/klippercmdfwrestart";
+        startRequest2(url);
+        return;
+    }
+
     if ( QMessageBox::question(this, "Confirm", "Are you sure you want to Firmware Restart?", QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes )
     {
         url = baseUrl + "/api/printer/command";
         command = "{ \"command\": \"FIRMWARE_RESTART\" }";
+
         startRequest(url, command);
     }
 }
@@ -957,7 +982,8 @@ void MainWindow::httpReadyRead2()
 
         if ( firstRun )
         {
-            actionConnect();
+            //actionRestart(true);
+            actionConnect(false);
         }
 
         return;
@@ -1018,10 +1044,9 @@ void MainWindow::httpReadyRead2()
 
     if ( firstRun && status == "Operational" && tool0["actual"].toDouble() == 0 )
     {
-        url = baseUrl + "/api/printer/command";
-        command = "{ \"command\": \"RESTART\" }";
-        startRequest(url, command);
+        actionRestart(true);
         firstRun = false;
+        connectingNumber = 0;
     }
 
     ui->label_2->setText( QString::number(tool0["actual"].toDouble()) + " / " + QString::number(tool0["target"].toDouble()) );

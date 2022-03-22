@@ -68,9 +68,9 @@ private slots:
     void actionStart();
     void actionPause();
     void actionStop();
-    void actionConnect();
-    void actionRestart();
-    void actionFirmwareRestart();
+    void actionConnect(bool home=true);
+    void actionRestart(bool force=false);
+    void actionFirmwareRestart(bool force=false);
     void actionBedTemp();
     void actionExtTemp();
     void actionToggleLight();
@@ -117,7 +117,7 @@ private:
     Ui::MainWindow *ui;
     SimpleServer *server;
     QDialog *promptDialog = 0;
-
+    int connectingNumber = 0;
     QAction* actionReboot;
 
     bool filamentLoaded = true;
